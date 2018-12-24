@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" id="create" action="{{ path('article_create') }}" enctype="multipart/form-data" method="POST">
+                <fieldset>
+                    <legend>New Post</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_title">Post Title</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="article_title" placeholder="Post Title"
+                                   name="article[title]">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_content">Content</label>
+                        <div class="col-sm-6">
+                        <textarea class="form-control" rows="6" id="article_content"
+                                  name="article[content]"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_title">Category</label>
+                        <div class="col-sm-4 ">
+                            {{ form(form.category) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_title">Post Image</label>
+                        <div class="col-sm-4 ">
+                            <button type="button" class="btn btn-default btn-sm" id="add" onclick="addFields()">
+                                <span class="plus">+</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="files"></div>
+
+                    {{ form_row(form._token) }}
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('offers_index') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <script type='text/javascript'>
+        var count=1;
+
+        function addFields(){
+            var tag = '<div><input type="file" name="image'+count+'"><button class="del" onclick="deleteThis(this)">Delete</button></div>';
+            $('#files').append(tag);
+            count +=1;
+        }
+        function deleteThis(elm){
+            $(elm).parent().remove();
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<div class="container body-content span=8 offset=2">
+<div class="well">
+<form class="form-horizontal" action="{{ path('article_edit', {id:
+article.id}) }}" enctype="multipart/form-data" method="POST">
+<fieldset>
+<legend>Edit Post</legend>
+<div class="form-group">
+<label class="col-sm-4 control-label"
+for="article_title">Post Title</label>
+<div class="col-sm-4 ">
+<input type="text" class="form-control"
+id="article_title" placeholder="Post Title"
+name="article[title]" value="{{ article.title }}">
+</div>
+</div>
+<div class="form-group">
+<label class="col-sm-4 control-label"
+for="article_content">Content</label>
+<div class="col-sm-6">
+<textarea class="form-control" rows="6"
+id="article_content"
+name="article[content]">{{ article.content
+}}</textarea>
+</div>
+</div>
+    {% for img in article.images %}
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for="article_title">Post Image</label>
+        <div class="col-sm-4 ">
+            <img src="{{ asset('uploads/images/') ~ img.name }}" name="{{ img.name }}" height="270" width="270">
+            <button class="del" onclick="deleteThis(this)">Delete</button>
+
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for="article_title">Category</label>
+        <div class="col-sm-4 ">
+            {{ form(form.category) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for="article_title">Post Image</label>
+        <div class="col-sm-4 ">
+            <button type="button" class="btn btn-default btn-sm" id="add" onclick="addFields()">
+                <span class="plus">+</span>
+            </button>
+        </div>
+    </div>
+    <div id="files"></div>
+{{ form_row(form._token) }}
+<div class="form-group">
+<div class="col-sm-4 col-sm-offset-4">
+<a class="btn btn-default" href="{{ path('article_view',
+{id: article.id}) }}">Cancel</a>
+<button type="submit" class="btn btn-
+success">Edit</button>
+</div>
+</div>
+</fieldset>
+</form>
+</div>
+</div>
+    <script type='text/javascript'>
+
+    </script>
+
+
+    <script>
+        var count=1;
+
+        function addFields(){
+            var tag = '<input type="file" name="image'+count+'">';
+            $(tag).insertAfter('#article_image');
+            count +=1;
+        }
+        function deleteThis(elm){
+            var autorId = {'authorId': {{ article.authorId }}};
+            var name = $(elm).prev().attr('name');
+            var url = '{{ path("delete_img", {'name': 'img_name'}) }}';
+            url = url.replace("img_name", name);
+            console.log(url);
+            $.ajax({
+                url: url,
+                type:"POST",
+                data: autorId,
+                success: function (data) {
+                    console.log(data);
+                    console.log('image deleted');
+                }
+            });
+            console.log(autorId);
+            $(elm).parent().parent().remove();
+        }
+        function addFields(){
+            var tag = '<div><input type="file" name="image'+count+'"><button class="del" onclick="deleteFile(this)">Delete</button></div>';
+            $('#files').append(tag);
+            count +=1;
+        }
+        function deleteFile(elm){
+            $(elm).parent().remove();
+        }
+    </script>
+{% endblock %}
+

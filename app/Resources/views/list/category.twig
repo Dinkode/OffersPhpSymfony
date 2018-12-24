@@ -1,0 +1,19 @@
+{% extends 'list/index.html.twig' %}
+
+    {% block pagination %}
+        {% if page!= 1 %}
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': 1}) }}"><<</a>
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': page-1}) }}"><</a>
+        {% endif %}
+        {% for i in range(0, count/3) %}
+            {% if page== i + 1 %}
+                <a class="btn btn-success btn-xs">{{ i + 1}}</a>
+            {% else %}
+                <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page':i + 1}) }}">{{ i + 1}}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page!= (count/3)|round(0, 'ceil') %}
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': page+1}) }}">></a>
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': (count/3)|round(0, 'ceil')}) }}">>></a>
+        {% endif %}
+    {% endblock %}
