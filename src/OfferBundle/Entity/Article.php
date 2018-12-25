@@ -4,7 +4,6 @@ namespace OfferBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Article
@@ -47,9 +46,9 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string")
+     * @ORM\Column(name="featured_image", type="string")
      */
-    private $image;
+    private $featuredImage;
 
     /**
      * @var string
@@ -59,28 +58,77 @@ class Article
 
     /**
      * @var int
-     * @ORM\Column(name="authorId", type="integer")
+     *
+     * @ORM\Column(name="author_id", type="integer")
      */
     private $authorId;
 
     /**
      * @var ArrayCollection|Image[]
      *
-     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Image", mappedBy="article", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Image", mappedBy="item", cascade={"persist"})
      */
     private $images;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OfferBundle\Entity\Category", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="OfferBundle\Entity\Category", inversedBy="items")
      */
     private $category;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Comment", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Comment", mappedBy="item")
      */
     private $comments;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="price", type="integer")
+     */
+    private $price;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="free_shipping", type="boolean")
+     */
+    private $freeShipping;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_new", type="boolean")
+     */
+    private $isNew;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="views", type="integer")
+     */
+    private $views;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string")
+     */
+    private $city;
+
+
+    /**
+     * Article constructor.
+     */
+    public function __construct()
+    {
+        $this->dateAdded = new \DateTime('now');
+        $this->images = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -98,17 +146,86 @@ class Article
         $this->category = $category;
     }
 
-
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
 
     /**
-     * Article constructor.
+     * @param int $price
      */
-    public function __construct()
+    public function setPrice(int $price): void
     {
-        $this->dateAdded = new \DateTime('now');
-        $this->images = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->price = $price;
     }
+
+    /**
+     * @return bool
+     */
+    public function isFreeShipping(): bool
+    {
+        return $this->freeShipping;
+    }
+
+    /**
+     * @param bool $freeShipping
+     */
+    public function setFreeShipping(bool $freeShipping): void
+    {
+        $this->freeShipping = $freeShipping;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): bool
+    {
+        return $this->isNew;
+    }
+
+    /**
+     * @param bool $isNew
+     */
+    public function setIsNew(bool $isNew): void
+    {
+        $this->isNew = $isNew;
+    }
+
+    /**
+     * @return int
+     */
+    public function getViews(): int
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     */
+    public function setViews(int $views): void
+    {
+        $this->views = $views;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     */
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
+    }
+
 
     /**
      * @return ArrayCollection
@@ -152,17 +269,17 @@ class Article
     /**
      * @return string
      */
-    public function getImage()
+    public function getFeaturedImage()
     {
-        return $this->image;
+        return $this->featuredImage;
     }
 
     /**
-     * @param string $image
+     * @param $featuredImage
      */
-    public function setImage($image)
+    public function setFeaturedImage($featuredImage)
     {
-        $this->image = $image;
+        $this->featuredImage = $featuredImage;
     }
 
 

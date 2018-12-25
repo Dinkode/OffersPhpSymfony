@@ -55,7 +55,12 @@ class User implements UserInterface
      */
     private $fullName;
 
-
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="phone", type="integer")
+     */
+    private $phone;
 
 
     /**
@@ -86,6 +91,24 @@ class User implements UserInterface
         $this->roles = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
+
+    /**
+     * @return int
+     */
+    public function getPhone(): int
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param int $phone
+     */
+    public function setPhone(int $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+
 
     /**
      * @return ArrayCollection
