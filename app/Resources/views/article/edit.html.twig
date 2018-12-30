@@ -45,6 +45,34 @@ name="article[content]">{{ article.content
     </div>
 
     <div class="form-group">
+        <label class="col-sm-4 control-label" >Price</label>
+        <div class="col-sm-4 ">
+            <input type="number" name="article[price]" id="article_price" value="0"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for="article_title">Free Shipping</label>
+        <div class="col-sm-4 ">
+            {{ form(form.freeShipping) }}
+        </div>
+    </div>
+
+    <div class="form-group" on>
+        <label class="col-sm-4 control-label" for="article_title">Is New</label>
+        <div class="col-sm-4 ">
+            {{ form(form.isNew) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for="article_title">City</label>
+        <div class="col-sm-4 ">
+            {{ form(form.city) }}
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-4 control-label" for="article_title">Post Image</label>
         <div class="col-sm-4 ">
             <button type="button" class="btn btn-default btn-sm" id="add" onclick="addFields()">
@@ -62,17 +90,20 @@ name="article[content]">{{ article.content
 success">Edit</button>
 </div>
 </div>
+    <input type="hidden" id="city" name="city">
 </fieldset>
 </form>
 </div>
 </div>
+
+
     <script type='text/javascript'>
 
-    </script>
-
-
-    <script>
         var count=1;
+
+        window.addEventListener("load",function(){
+            getCity();
+        },false);
 
         function addFields(){
             var tag = '<input type="file" name="image'+count+'">';
@@ -104,6 +135,9 @@ success">Edit</button>
         }
         function deleteFile(elm){
             $(elm).parent().remove();
+        }
+        function getCity() {
+            $('#city').val(($("#article_city option:selected").text()))
         }
     </script>
 {% endblock %}

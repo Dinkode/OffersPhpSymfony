@@ -2,6 +2,7 @@
 
 namespace OfferBundle\Controller;
 
+use OfferBundle\Entity\City;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use OfferBundle\Entity\Article;
 use OfferBundle\Entity\Image;
@@ -27,6 +28,7 @@ class ArticleController extends Controller
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
+
         if($form->isSubmitted() && $form->isValid()){
             /** @var UploadedFile $file */
             $files = $request->files->all();
@@ -48,11 +50,15 @@ class ArticleController extends Controller
                     }
                 }
             }
-            $article->setImage("ddd");
+            $article->setFeaturedImage("ddd");
+            $article->setViews(0);
+            $cityName = $request->request->get('city');
+            $city =  $this->getDoctrine()->getRepository(City::class)->findOneBy(['name'=>$cityName]);
+            $article->setCity($city);
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
-            return $this->redirectToRoute("blog_index");
+            return $this->redirectToRoute("offers_index");
         }
         return $this->render("article/create.html.twig", ['form'=>$form->createView()]);
 
@@ -81,17 +87,17 @@ class ArticleController extends Controller
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
-        $article->setImage("dadadada");
 
         /** @var User $currentUser */
         $currentUser=$this->getUser();
+        $article->setCity($article->getCity());
 
         if($article === null){
-            return $this->redirectToRoute('blog_index');
+            return $this->redirectToRoute('offers_index');
         }
 
         if(!($currentUser->isAuthor($article) || $currentUser->isAdmin())){
-            return $this->redirectToRoute('blog_index');
+            return $this->redirectToRoute('offers_index');
         }
 
 
@@ -116,13 +122,17 @@ class ArticleController extends Controller
                 }
             }
 
-
+            $article->setFeaturedImage("ddd");
+            $article->setViews(0);
+            $cityName = $request->request->get('city');
+            $city =  $this->getDoctrine()->getRepository(City::class)->findOneBy(['name'=>$cityName]);
+            $article->setCity($city);
             $currentUser = $this->getUser();
             $article->setAuthor($currentUser);
             $em = $this->getDoctrine()->getManager();
             $em->merge($article);
             $em->flush();
-            return $this->redirectToRoute("blog_index");
+            return $this->redirectToRoute("offers_index");
         }
         return $this->render("article/edit.html.twig", ['form'=>$form->createView(), 'article'=>$article]);
 
@@ -145,10 +155,10 @@ class ArticleController extends Controller
         $currentUser=$this->getUser();
 
         if($article === null){
-            return $this->redirectToRoute('blog_index');
+            return $this->redirectToRoute('offers_index');
         }
         if(!$currentUser->isAuthor($article) && !$currentUser->isAdmin()){
-            return $this->redirectToRoute('blog_index');
+            return $this->redirectToRoute('offers_index');
         }
 
 
@@ -163,7 +173,7 @@ class ArticleController extends Controller
 
             $this->getDoctrine()->getRepository(Article::class)->deleteArticle($article->getId());
 
-            return $this->redirectToRoute("blog_index");
+            return $this->redirectToRoute("offers_index");
         }
         return $this->render("article/delete.html.twig", ['form'=>$form->createView(), 'article'=>$article]);
 

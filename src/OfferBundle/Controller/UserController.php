@@ -36,6 +36,8 @@ class UserController extends Controller
             }
 
 
+            $phone = $request->get('phone');
+            $user->setPhone($phone['phone']);
             $role = $this->getDoctrine()->getRepository(Role::class)->findOneBy(['name'=>'ROLE_USER']);
             $user->setRoles($role);
             $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());

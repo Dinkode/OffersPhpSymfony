@@ -2,10 +2,15 @@
 
 namespace OfferBundle\Form;
 
+use Doctrine\DBAL\Types\FloatType;
 use OfferBundle\Entity\Category;
+use OfferBundle\Entity\City;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,6 +25,14 @@ class ArticleType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('content', TextType::class)
+            ->add('isNew', CheckboxType::class)
+            ->add('freeShipping', CheckboxType::class)
+            ->add('price', MoneyType::class, array('currency'=>''))
+            ->add('city', EntityType::class, [
+                'class' => City::class,
+                'choice_label' => 'name',
+                'attr' => array('onchange'=>'getCity()', 'data-onload'=>'getCity()'),
+                'placeholder' => ''])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',

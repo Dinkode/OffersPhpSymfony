@@ -57,35 +57,28 @@ class Article
 
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="author_id", type="integer")
-     */
-    private $authorId;
-
-    /**
      * @var ArrayCollection|Image[]
      *
-     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Image", mappedBy="item", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Image", mappedBy="article", cascade={"persist"})
      */
     private $images;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OfferBundle\Entity\Category", inversedBy="items")
+     * @ORM\ManyToOne(targetEntity="OfferBundle\Entity\Category", inversedBy="articles")
      */
     private $category;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Comment", mappedBy="item")
+     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Comment", mappedBy="article")
      */
     private $comments;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="price", type="integer")
+     * @ORM\Column(name="price", type="decimal", precision=7, scale=2)
      */
     private $price;
 
@@ -113,9 +106,7 @@ class Article
 
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="city", type="string")
+     * @ORM\ManyToOne(targetEntity="OfferBundle\Entity\City", inversedBy="articles")
      */
     private $city;
 
@@ -149,7 +140,7 @@ class Article
     /**
      * @return int
      */
-    public function getPrice(): int
+    public function getPrice()
     {
         return $this->price;
     }
@@ -157,7 +148,7 @@ class Article
     /**
      * @param int $price
      */
-    public function setPrice(int $price): void
+    public function setPrice(int $price)
     {
         $this->price = $price;
     }
@@ -165,7 +156,7 @@ class Article
     /**
      * @return bool
      */
-    public function isFreeShipping(): bool
+    public function isFreeShipping()
     {
         return $this->freeShipping;
     }
@@ -173,7 +164,7 @@ class Article
     /**
      * @param bool $freeShipping
      */
-    public function setFreeShipping(bool $freeShipping): void
+    public function setFreeShipping(bool $freeShipping)
     {
         $this->freeShipping = $freeShipping;
     }
@@ -181,7 +172,7 @@ class Article
     /**
      * @return bool
      */
-    public function isNew(): bool
+    public function isNew()
     {
         return $this->isNew;
     }
@@ -189,15 +180,19 @@ class Article
     /**
      * @param bool $isNew
      */
-    public function setIsNew(bool $isNew): void
+    public function setIsNew(bool $isNew)
     {
         $this->isNew = $isNew;
+    }
+
+    public function getAuthorId(){
+        return $this->getAuthor()->getId();
     }
 
     /**
      * @return int
      */
-    public function getViews(): int
+    public function getViews()
     {
         return $this->views;
     }
@@ -205,23 +200,23 @@ class Article
     /**
      * @param int $views
      */
-    public function setViews(int $views): void
+    public function setViews(int $views)
     {
         $this->views = $views;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCity(): string
+    public function getCity()
     {
         return $this->city;
     }
 
     /**
-     * @param string $city
+     * @param mixed $city
      */
-    public function setCity(string $city): void
+    public function setCity($city): void
     {
         $this->city = $city;
     }
@@ -281,28 +276,6 @@ class Article
     {
         $this->featuredImage = $featuredImage;
     }
-
-
-
-    /**
-     * @return int
-     */
-    public function getAuthorId()
-    {
-        return $this->authorId;
-    }
-
-    /**
-     * @param int $authorId
-     * @return Article
-     */
-    public function setAuthorId(int $authorId)
-    {
-        $this->authorId = $authorId;
-        
-        return $this;
-    }
-
 
 
 

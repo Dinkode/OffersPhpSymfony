@@ -23,10 +23,41 @@
                         </div>
                     </div>
 
+
+
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="article_title">Category</label>
                         <div class="col-sm-4 ">
                             {{ form(form.category) }}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Price</label>
+                        <div class="col-sm-4 ">
+                            <input type="number" name="article[price]" id="article_price" value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_title">Free Shipping</label>
+                        <div class="col-sm-4 ">
+                            {{ form(form.freeShipping) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_title">Is New</label>
+                        <div class="col-sm-4 ">
+                            {{ form(form.isNew) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_title">City</label>
+                        <div class="col-sm-4 ">
+                            {{ form(form.city) }}
                         </div>
                     </div>
 
@@ -48,12 +79,19 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
+
+                    <input type="hidden" id="city" name="city">
                 </fieldset>
             </form>
         </div>
     </div>
     <script type='text/javascript'>
+
         var count=1;
+
+        window.addEventListener("load",function(){
+            getCity();
+        },false);
 
         function addFields(){
             var tag = '<div><input type="file" name="image'+count+'"><button class="del" onclick="deleteThis(this)">Delete</button></div>';
@@ -62,6 +100,9 @@
         }
         function deleteThis(elm){
             $(elm).parent().remove();
+        }
+        function getCity() {
+            $('#city').val(($("#article_city option:selected").text()))
         }
     </script>
 

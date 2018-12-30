@@ -33,6 +33,6 @@ class ImageController extends Controller
 
             return new JsonResponse($json);
         }
-        return $this->redirectToRoute('blog_index');
+        return $this->redirectToRoute('offers_index');
     }
 }

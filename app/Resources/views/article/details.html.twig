@@ -13,7 +13,7 @@
                         {{ article.content }}
                     </p>
 
-                    <img src="{{ asset('uploads/images/') ~ article.image }}" >
+                    <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" >
 
                     <small class="author">
                         {{ article.author.fullName }}
@@ -21,11 +21,12 @@
 
                     <button id="addComment" class="btn btn-default" onclick="writeComment()">Add Comment</button>
                     <div id="comment" style="display: none">
-                        <form method="post" action="">
+                        <form method="post" action="{{ path('add_comment', {id:
+                            article.id}) }}">
                             <div class="form-group">
                                 <!--<label class="col-sm-4 control-label" for="article_content">Content</label>-->
                                 <div class="col-sm-6">
-                                    <textarea class="form-control" rows="6" id="comment_content" name="comment[content]"></textarea>
+                                    <textarea class="form-control" rows="6" id="comment_content" name="comment"></textarea>
                                     <input class="btn btn-success btn-sm" type="submit" value="Create" />
                                 </div>
                             </div>
@@ -36,9 +37,16 @@
                             <label class="col-sm-4 control-label" for="article_title">Post Image</label>
                             <div class="col-sm-4 ">
                                 <img src="{{ asset('uploads/images/') ~ img.name }}" name="{{ img.name }}" height="270" width="270">
-                                <button class="del" onclick="deleteThis(this)">Delete</button>
-
                             </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for comment in article.comments %}
+                        <div>
+                        <p>{{ comment.content }}</p>
+                        {% if app.getUser() and (app.getUser().isCommentAuthor(comment) or app.getUser().isAdmin()) %}
+                            <button class="del" onclick="deleteComment(this, {{ comment.id }})">Delete</button>
+                        {% endif %}
                         </div>
                     {% endfor %}
 
@@ -66,6 +74,24 @@
                     console.log(data['lambo']);
                 }
             });
+        }
+
+        function deleteComment(elm, id) {
+            var autorId = {'authorId': {{ article.authorId }}};
+            var url = '{{ path("delete_comment", {'id': 'comment_id'}) }}';
+            url = url.replace("comment_id", id);
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: autorId,
+                success: function (data) {
+                    console.log(data);
+                    console.log('image deleted');
+                }
+            });
+            console.log(autorId);
+            $(elm).parent().remove();
         }
 
     </script>

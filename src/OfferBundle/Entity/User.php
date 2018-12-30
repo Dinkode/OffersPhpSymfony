@@ -56,9 +56,9 @@ class User implements UserInterface
     private $fullName;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="phone", type="integer")
+     * @ORM\Column(name="phone", type="string")
      */
     private $phone;
 
@@ -93,17 +93,17 @@ class User implements UserInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getPhone(): int
+    public function getPhone(): string
     {
         return $this->phone;
     }
 
     /**
-     * @param int $phone
+     * @param string $phone
      */
-    public function setPhone(int $phone): void
+    public function setPhone(string $phone): void
     {
         $this->phone = $phone;
     }
@@ -320,6 +320,9 @@ class User implements UserInterface
      */
     public function isAuthor(Article $article){
         return $article->getAuthorId()===$this->id;
+    }
+    public function isCommentAuthor(Comment $comment){
+        return $comment->getUser()->getId()===$this->id;
     }
 
     public function isAdmin(){
