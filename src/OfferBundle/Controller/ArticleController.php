@@ -3,6 +3,7 @@
 namespace OfferBundle\Controller;
 
 use OfferBundle\Entity\City;
+use OfferBundle\Entity\Comment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use OfferBundle\Entity\Article;
 use OfferBundle\Entity\Image;
@@ -34,10 +35,14 @@ class ArticleController extends Controller
             $files = $request->files->all();
             $currentUser = $this->getUser();
             $article->setAuthor($currentUser);
+            $imgName = $request->request->get('featured');
 
             foreach ($files as $file) {
                 if($file!=null) {
                     $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                    if($imgName === $file->getClientOriginalName()){
+                        $article->setFeaturedImage($fileName);
+                    }
                     $image = new Image();
                     $image->setName($fileName);
                     $image->setArticle($article);
@@ -50,7 +55,6 @@ class ArticleController extends Controller
                     }
                 }
             }
-            $article->setFeaturedImage("ddd");
             $article->setViews(0);
             $cityName = $request->request->get('city');
             $city =  $this->getDoctrine()->getRepository(City::class)->findOneBy(['name'=>$cityName]);
@@ -106,10 +110,14 @@ class ArticleController extends Controller
 
             /** @var UploadedFile $file */
             $files = $request->files->all();
-
+            $imgName = $request->request->get('featured');
+            $article->setFeaturedImage($article->getFeaturedImage());
             foreach ($files as $file) {
                 if($file!=null) {
                     $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                    if($imgName === $file->getClientOriginalName()){
+                        $article->setFeaturedImage($fileName);
+                    }
                     $image = new Image();
                     $image->setName($fileName);
                     $image->setArticle($article);
@@ -121,8 +129,6 @@ class ArticleController extends Controller
                     }
                 }
             }
-
-            $article->setFeaturedImage("ddd");
             $article->setViews(0);
             $cityName = $request->request->get('city');
             $city =  $this->getDoctrine()->getRepository(City::class)->findOneBy(['name'=>$cityName]);
@@ -151,6 +157,7 @@ class ArticleController extends Controller
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
+
         /** @var User $currentUser */
         $currentUser=$this->getUser();
 
@@ -169,6 +176,7 @@ class ArticleController extends Controller
                 $fs->remove($this->getParameter('image_directory') . $image->getName());
             }
             $currentUser = $this->getUser();
+            $this->getDoctrine()->getRepository(Comment::class)->deleteComment($article);
             $article->setAuthor($currentUser);
 
             $this->getDoctrine()->getRepository(Article::class)->deleteArticle($article->getId());

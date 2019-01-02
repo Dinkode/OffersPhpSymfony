@@ -125,11 +125,12 @@ success">Edit</button>
                     console.log('image deleted');
                 }
             });
+
             console.log(autorId);
             $(elm).parent().parent().remove();
         }
         function addFields(){
-            var tag = '<div><input type="file" name="image'+count+'"><button class="del" onclick="deleteFile(this)">Delete</button></div>';
+            var tag = '<div><input type="file" onchange="setValue(this)" name="image'+count+'"><button class="del" onclick="deleteFile(this)">Delete</button><input type="radio" name="featured" value="male"> Male<br></div>';
             $('#files').append(tag);
             count +=1;
         }
@@ -138,6 +139,9 @@ success">Edit</button>
         }
         function getCity() {
             $('#city').val(($("#article_city option:selected").text()))
+        }
+        function setValue(elm) {
+            $(elm).next().next().val(elm.value.split('\\').pop());
         }
     </script>
 {% endblock %}

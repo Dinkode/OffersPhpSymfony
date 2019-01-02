@@ -23,8 +23,9 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     public function paginationArticles($offset, $limit, $category){
         $query = $this
             ->createQueryBuilder('a')
-            ->select('a')
-            ->where('a.category = :category')
+            ->select('a, c')
+            ->join('a.category', 'c')
+            ->where('c.name = :category')
             ->setParameter('category', $category)
             ->setFirstResult($offset)
             ->setMaxResults($limit)

@@ -32,7 +32,7 @@
                     </button>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right  mr-auto">
                         {% if app.user %}
                             <li>
                                 <a href="{{ path('article_create') }}">
@@ -61,6 +61,14 @@
                                 </a>
                             </li>
                         {% endif %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    OFFERS
+                                </a>
+                                <div id="offers" class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                </div>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -90,6 +98,20 @@
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script>
+        var url = '{{ path("get_nav") }}';
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (data) {
+                for(var name of data){
+                    var link = '{{ path('page', {'category':'category_name', 'page':1})}}';
+                    link = link.replace("category_name", name['name']);
+                    $('#offers').append(`<a href="${link}">${name['name']}</a>`)
+                }
+            }
+        })
+    </script>
 
 {% endblock %}
 

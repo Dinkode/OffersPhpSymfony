@@ -94,15 +94,18 @@
         },false);
 
         function addFields(){
-            var tag = '<div><input type="file" name="image'+count+'"><button class="del" onclick="deleteThis(this)">Delete</button></div>';
+            var tag = '<div><input type="file" onchange="setValue(this)" name="image'+count+'"><button class="del" onclick="deleteFile(this)">Delete</button><input type="radio" name="featured" value="male"> Male<br></div>';
             $('#files').append(tag);
             count +=1;
         }
-        function deleteThis(elm){
+        function deleteFile(elm){
             $(elm).parent().remove();
         }
         function getCity() {
-            $('#city').val(($("#article_city option:selected").text()))
+            $('#city').val(($("#article_city option:selected").text()));
+        }
+        function setValue(elm) {
+            $(elm).next().next().val(elm.value.split('\\').pop());
         }
     </script>
 

@@ -19,7 +19,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{category}/{page}", name="page")
+     * @Route("/offers/{category}/{page}", name="page")
      * @param $category
      * @param $page
      * @return \Symfony\Component\HttpFoundation\Response

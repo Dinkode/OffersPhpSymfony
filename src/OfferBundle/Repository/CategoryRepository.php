@@ -10,4 +10,11 @@ namespace OfferBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getNav(){
+        $query = $this
+            ->createQueryBuilder('c')
+            ->select('c.name')
+            ->getQuery();
+        return $query->execute();
+    }
 }

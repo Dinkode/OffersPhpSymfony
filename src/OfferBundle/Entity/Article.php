@@ -46,7 +46,7 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="featured_image", type="string")
+     * @ORM\Column(name="featured_image", type="string", nullable=true)
      */
     private $featuredImage;
 
@@ -64,6 +64,7 @@ class Article
     private $images;
 
     /**
+     * @var Category
      * @ORM\ManyToOne(targetEntity="OfferBundle\Entity\Category", inversedBy="articles")
      */
     private $category;
@@ -71,13 +72,11 @@ class Article
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Comment", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="OfferBundle\Entity\Comment", mappedBy="article", cascade={"persist"})
      */
     private $comments;
 
     /**
-     * @var int
-     *
      * @ORM\Column(name="price", type="decimal", precision=7, scale=2)
      */
     private $price;
@@ -122,7 +121,7 @@ class Article
     }
 
     /**
-     * @return mixed
+     * @return Category
      */
     public function getCategory()
     {
@@ -130,25 +129,21 @@ class Article
     }
 
     /**
-     * @param mixed $category
+     * @param Category $category
      */
     public function setCategory($category): void
     {
         $this->category = $category;
     }
 
-    /**
-     * @return int
-     */
+
     public function getPrice()
     {
         return $this->price;
     }
 
-    /**
-     * @param int $price
-     */
-    public function setPrice(int $price)
+
+    public function setPrice( $price)
     {
         $this->price = $price;
     }

@@ -31,7 +31,7 @@ class Image
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateAdded", type="datetime")
+     * @ORM\Column(name="date_added", type="datetime")
      */
     private $dateAdded;
 
@@ -125,4 +125,3 @@ class Image
         return $this->dateAdded;
     }
 }
-

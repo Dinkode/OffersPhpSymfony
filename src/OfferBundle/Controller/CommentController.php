@@ -41,7 +41,7 @@ class CommentController extends Controller
         $em->persist($comment);
         $em->flush();
 
-        return $this->render("article/details.html.twig", ['article'=>$article]);
+        return $this->redirectToRoute("article_view", ['id'=>$id]);
     }
 
     /**
@@ -50,7 +50,7 @@ class CommentController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse | JsonResponse
      */
-    public function deleteImgAction($id, Request $request)
+    public function deleteCommentAction($id, Request $request)
     {
 
 
