@@ -45,6 +45,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ path('user_offers') }}">
+                                    My Offers
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ path('security_logout') }}">
                                     Logout
                                 </a>
@@ -71,6 +76,10 @@
                             </li>
                     </ul>
                 </div>
+                <form action="{{ path('article_search', {'page':1})}}" method="GET">
+                    <input type="text" id="key" name="key">
+                    <input type="submit" value="SEARCH">
+                </form>
             </div>
         </div>
     </header>
@@ -106,7 +115,7 @@
             success: function (data) {
                 for(var name of data){
                     var link = '{{ path('page', {'category':'category_name', 'page':1})}}';
-                    link = link.replace("category_name", name['name']);
+                    link = link.replace("category_name", name['name'].toLowerCase());
                     $('#offers').append(`<a href="${link}">${name['name']}</a>`)
                 }
             }

@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
 {% block main %}
-    {% block filters %}
-    {% endblock %}
     <div class="container body-content">
         <div class="row">
             {% for article in articles %}
@@ -30,11 +33,7 @@
                     </article>
                 </div>
             {% endfor %}
-
         </div>
     </div>
-    {% block pagination %}
-
-    {% endblock %}
-
 {% endblock %}
+

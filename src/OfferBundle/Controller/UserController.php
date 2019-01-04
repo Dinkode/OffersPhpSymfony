@@ -2,6 +2,7 @@
 
 namespace OfferBundle\Controller;
 
+use OfferBundle\Entity\Article;
 use OfferBundle\Entity\Role;
 use OfferBundle\Entity\User;
 use OfferBundle\Form\UserType;
@@ -57,5 +58,14 @@ class UserController extends Controller
         $userId = $this->getUser()->getId();
         $user = $this->getDoctrine()->getRepository(User::class)->find($userId);
         return $this->render('user/profile.html.twig', ['user'=>$user]);
+    }
+
+    /**
+     * @Route("/articles", name="user_offers")
+     */
+    public function myOffers(){
+        $userId = $this->getUser()->getId();
+        $articles = $this->getDoctrine()->getRepository(Article::class)->findBy(['author'=>$userId]);
+        return $this->render('user/articles.html.twig', ['articles'=>$articles]);
     }
 }

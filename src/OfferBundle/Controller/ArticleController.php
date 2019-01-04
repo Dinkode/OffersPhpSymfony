@@ -55,6 +55,9 @@ class ArticleController extends Controller
                     }
                 }
             }
+            if(count($article->getImages())>0 && $article->getFeaturedImage() == null){
+                $article->setFeaturedImage($article->getImages()[0]->getName());
+            }
             $article->setViews(0);
             $cityName = $request->request->get('city');
             $city =  $this->getDoctrine()->getRepository(City::class)->findOneBy(['name'=>$cityName]);
@@ -128,6 +131,9 @@ class ArticleController extends Controller
 
                     }
                 }
+            }
+            if(count($article->getImages())>0 && $article->getFeaturedImage() == null){
+                $article->setFeaturedImage($article->getImages()[0]->getName());
             }
             $article->setViews(0);
             $cityName = $request->request->get('city');

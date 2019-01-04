@@ -20,24 +20,40 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
         return $query->execute();
     }
 
-    public function paginationArticles($offset, $limit, $category){
+    public function paginationArticles($offset, $limit, $category, $shipping, $new, $image, $order, $type){
         $query = $this
             ->createQueryBuilder('a')
             ->select('a, c')
             ->join('a.category', 'c')
             ->where('c.name = :category')
+            ->andWhere('a.freeShipping = 1 or a.freeShipping = :shipping')
+            ->andWhere('a.isNew = 1 or a.isNew = :new')
+            ->andWhere('a.featuredImage IS NOT NULL or a.featuredImage IS '.$image)
+            ->orderBy('a.'.$order, $type)
             ->setParameter('category', $category)
+            ->setParameter('shipping', $shipping)
+            ->setParameter('new', $new)
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery();
         return $query->execute();
     }
 
-    public function getArticlesCount(){
+    public function searchArticles($offset, $limit, $shipping, $new, $image, $order, $type, $key){
         $query = $this
-            ->createQueryBuilder('a')
-            ->select('a.id')
-            ->getQuery();
-        return $query->execute();
+            ->createQueryBuilder('a');
+        return $query->where($query->expr()->like('a.title',  $query->expr()->literal('%' . $key . '%')))
+            ->andWhere('a.freeShipping = 1 or a.freeShipping = :shipping')
+            ->andWhere('a.isNew = 1 or a.isNew = :new')
+            ->andWhere('a.featuredImage IS NOT NULL or a.featuredImage IS '.$image)
+            ->orderBy('a.'.$order, $type)
+            ->setParameter('shipping', $shipping)
+            ->setParameter('new', $new)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()->getResult();
+
+
     }
+
 }
