@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'profile' %}
+
+{% block main %}
+    <form>
+    {% for user in users %}
+        <ul>
+            <li>{{ user.fullName }}</li>
+
+            {% for role in roles %}
+               <ul>
+                   <li>
+                       {{ role.name }} <input type="checkbox" name="{{ user.id }}" {% if  role.name  in user.roles %} checked {% endif %}>
+                   </li>
+               </ul>
+            {% endfor %}
+
+
+
+        </ul>
+    </form>
+    {% endfor %}
+    <script>
+        function setAsAdmin(elm) {
+            var name = $(elm).attr('name');
+            var url = '{{ path("set_admin", {'id': 'id'}) }}';
+            url = url.replace("id", name);
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: "POST",
+                success: function (data) {
+                    console.log(data);
+                    console.log('role admin set');
+                }
+            })
+        }
+    </script>
+{% endblock %}

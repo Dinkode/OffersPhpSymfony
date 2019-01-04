@@ -34,6 +34,13 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right  mr-auto">
                         {% if app.user %}
+                            {% if app.getUser().isAdmin() %}
+                            <li>
+                                <a href="{{ path('admin') }}">
+                                    Admin Panel
+                                </a>
+                            </li>
+                            {% endif %}
                             <li>
                                 <a href="{{ path('article_create') }}">
                                     Create Article
@@ -114,8 +121,8 @@
             type: "GET",
             success: function (data) {
                 for(var name of data){
-                    var link = '{{ path('page', {'category':'category_name', 'page':1})}}';
-                    link = link.replace("category_name", name['name'].toLowerCase());
+                    var link = '{{ path('cities', {'category':'name'})}}';
+                    link = link.replace("name", name['name'].toLowerCase());
                     $('#offers').append(`<a href="${link}">${name['name']}</a>`)
                 }
             }

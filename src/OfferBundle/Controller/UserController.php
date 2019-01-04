@@ -7,6 +7,7 @@ use OfferBundle\Entity\Role;
 use OfferBundle\Entity\User;
 use OfferBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -68,4 +69,44 @@ class UserController extends Controller
         $articles = $this->getDoctrine()->getRepository(Article::class)->findBy(['author'=>$userId]);
         return $this->render('user/articles.html.twig', ['articles'=>$articles]);
     }
+
+    /**
+     * @Route("/admin", name="admin")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function admin(Request $request){
+        $currentUser=$this->getUser();
+        if(!$currentUser->isAdmin()){
+            return $this->redirectToRoute('offers_index');
+        }
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+        $roles = $this->getDoctrine()->getRepository(Role::class)->findAll();
+        return $this->render('user/admin.html.twig', ['users'=>$users, 'roles'=>$roles]);
+    }
+
+    /**
+     * @Route("/set_admin/{id}", name="set_admin")
+     * @param $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function setAdmin($id, Request $request)
+    {
+            /** @var User $user */
+            $user = $this->getDoctrine()->getRepository(User::class)->findBy($id);
+            $role = $this->getDoctrine()->getRepository(Role::class)->findBy(['name'=>'ROLE_ADMIN']);
+            $user->setRoles($role);
+
+
+            $json = ['name' => ''];
+
+            $em = $this->getDoctrine()->getManager();
+            $em->merge($user);
+            $em->flush();
+
+            return new JsonResponse($json);
+
+    }
+
 }

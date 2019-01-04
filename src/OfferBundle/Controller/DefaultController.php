@@ -19,13 +19,14 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/offers/{category}/{page}", name="page")
+     * @Route("/offers/{city}/{category}/{page}", name="page")
      * @param $category
      * @param $page
+     * @param $city
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pageAction($category, $page, Request $request)
+    public function pageAction($category, $page, $city, Request $request)
     {
 
         if ($page<=0){
@@ -55,14 +56,22 @@ class DefaultController extends Controller
             $orderBy = 'price';
             $orderType = 'DESC';
         }
+        $cityName = $city;
+        if($city=='all'){
+            $articles = $this->getDoctrine()->getRepository(Article::class)
+                ->paginationAllArticles($offset, $limit, $category, $shipping, $new, $image, $orderBy, $orderType);
+            $count = count($this->getDoctrine()->getRepository(Article::class)
+                ->paginationAllArticles(0, PHP_INT_MAX, $category, $shipping, $new, $image, $orderBy, $orderType));
+            return $this->render('list/category.twig', ['articles'=>$articles, 'count'=>$count, 'page'=>$page, 'category'=>$category, 'show'=>$limit, 'city'=>$city]);
+        }
 
 
 
         $articles = $this->getDoctrine()->getRepository(Article::class)
-            ->paginationArticles($offset, $limit, $category, $shipping, $new, $image, $orderBy, $orderType);
+            ->paginationArticles($offset, $limit, $category, $shipping, $new, $image, $orderBy, $orderType, $cityName);
         $count = count($this->getDoctrine()->getRepository(Article::class)
-            ->paginationArticles(0, PHP_INT_MAX, $category, $shipping, $new, $image, $orderBy, $orderType));
-        return $this->render('list/category.twig', ['articles'=>$articles, 'count'=>$count, 'page'=>$page, 'category'=>$category, 'show'=>$limit]);
+            ->paginationArticles(0, PHP_INT_MAX, $category, $shipping, $new, $image, $orderBy, $orderType, $cityName));
+        return $this->render('list/category.twig', ['articles'=>$articles, 'count'=>$count, 'page'=>$page, 'category'=>$category, 'show'=>$limit, 'city'=>$city]);
     }
 
     /**

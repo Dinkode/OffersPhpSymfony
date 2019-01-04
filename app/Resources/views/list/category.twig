@@ -27,18 +27,18 @@
 {% endblock %}
     {% block pagination %}
         {% if page!= 1 %}
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': 1} | merge(app.request.query.all)) }}"><<</a>
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': page-1} | merge(app.request.query.all)) }}"><</a>
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': 1} | merge(app.request.query.all)) }}"><<</a>
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': page-1} | merge(app.request.query.all)) }}"><</a>
         {% endif %}
-        {% for i in range(0, count/show) %}
+        {% for i in range(0, (count/show)|round(0, 'ceil')-1) %}
             {% if page== i + 1 %}
                 <a class="btn btn-success btn-xs">{{ i + 1}}</a>
             {% else %}
-                <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page':i + 1} | merge(app.request.query.all)) }}">{{ i + 1}}</a>
+                <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page':i + 1} | merge(app.request.query.all)) }}">{{ i + 1}}</a>
             {% endif %}
         {% endfor %}
         {% if page!= (count/3)|round(0, 'ceil') %}
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': page+1} | merge(app.request.query.all)) }}">></a>
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'category': category, 'page': (count/3)|round(0, 'ceil')} | merge(app.request.query.all)) }}">>></a>
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': page+1} | merge(app.request.query.all)) }}">></a>
+            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': (count/3)|round(0, 'ceil')} | merge(app.request.query.all)) }}">>></a>
         {% endif %}
     {% endblock %}

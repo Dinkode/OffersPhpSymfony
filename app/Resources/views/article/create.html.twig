@@ -94,7 +94,7 @@
         },false);
 
         function addFields(){
-            var tag = '<div><input type="file" onchange="setValue(this)" name="image'+count+'"><button class="del" onclick="deleteFile(this)">Delete</button><input type="radio" name="featured" value="male"> Male<br></div>';
+            var tag = '<div><input type="file" onchange="setValue(this)" name="image'+count+'"><button class="del" onclick="deleteFile(this)">Delete</button><input type="radio" name="featured" value="featured"> Set as featured<br></div>';
             $('#files').append(tag);
             count +=1;
         }

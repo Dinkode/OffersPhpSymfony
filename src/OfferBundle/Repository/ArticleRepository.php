@@ -20,7 +20,29 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
         return $query->execute();
     }
 
-    public function paginationArticles($offset, $limit, $category, $shipping, $new, $image, $order, $type){
+    public function paginationArticles($offset, $limit, $category, $shipping, $new, $image, $order, $type, $city){
+        $query = $this
+            ->createQueryBuilder('a')
+            ->select('a, c')
+            ->join('a.category', 'c')
+            ->join('a.city', 'cs')
+            ->where('cs.name = :city')
+            ->andWhere('c.name = :category')
+            ->andWhere('a.freeShipping = 1 or a.freeShipping = :shipping')
+            ->andWhere('a.isNew = 1 or a.isNew = :new')
+            ->andWhere('a.featuredImage IS NOT NULL or a.featuredImage IS '.$image)
+            ->orderBy('a.'.$order, $type)
+            ->setParameter('city', $city)
+            ->setParameter('category', $category)
+            ->setParameter('shipping', $shipping)
+            ->setParameter('new', $new)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->execute();
+    }
+
+    public function paginationAllArticles($offset, $limit, $category, $shipping, $new, $image, $order, $type){
         $query = $this
             ->createQueryBuilder('a')
             ->select('a, c')
