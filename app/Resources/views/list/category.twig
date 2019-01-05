@@ -1,15 +1,18 @@
 {% extends 'list/articles.html.twig' %}
 {% block filters %}
-    <form method="get">
-        <label for="is-new">New</label>
-        <input type="checkbox" name="new" id="is-new" value="1" {% if app.request.get('new') == "1" %} checked {% endif %}>
+    <form  class="form-horizontal" method="get">
+        <fieldset>
+        <div class="row bg-dark pt-3 pb-3">
+        <label class="pl-5" for="is-new">New</label>
+        <input class="ml-1 mt-1 mr-3" type="checkbox" name="new" id="is-new" value="1" {% if app.request.get('new') == "1" %} checked {% endif %}>
         <label for="free-shipping">Free shipping</label>
-        <input type="checkbox" name="shipping" id="free-shipping" value="1" {% if app.request.get('shipping') == "1" %} checked {% endif %}>
+        <input class="ml-1 mt-1 mr-3" type="checkbox" name="shipping" id="free-shipping" value="1" {% if app.request.get('shipping') == "1" %} checked {% endif %}>
         <label for="images">With images</label>
-        <input type="checkbox" name="images" id="images" value="1" {% if app.request.get('images') == "1" %} checked {% endif %}>
-        <input type="submit" value="filter">
-        <label for="order">Free shipping</label>
-        <select name="order" id="order" onchange="this.form.submit()">
+        <input class="ml-1 mt-1 mr-3" type="checkbox" name="images" id="images" value="1" {% if app.request.get('images') == "1" %} checked {% endif %}>
+        <input class="btn-sm btn-success" type="submit" value="FILTER">
+        <label class="pl-lg-5"for="order">Order by</label>
+
+        <select class="ml-1 mr-3" name="order" id="order" onchange="this.form.submit()">
             <option value="new" selected>new items</option>
             <option value="last" {% if app.request.get('order') == "last" %} selected {% endif %}>last items</option>
             <option value="view" {% if app.request.get('order') == "view" %} selected {% endif %}>most visited</option>
@@ -17,28 +20,32 @@
             <option value="pricedesc" {% if app.request.get('order') == "pricedesc" %} selected {% endif %}>descending price</option>
         </select>
         <label for="show">Articles per page</label>
-        <select name="show" id="show" onchange="this.form.submit()">
+        <select class="ml-1" name="show" id="show" onchange="this.form.submit()">
             <option value="3" selected>3</option>
             <option value="9" {% if app.request.get('show') == "9" %} selected {% endif %}>9</option>
             <option value="18" {% if app.request.get('show') == "18" %} selected {% endif %}>18</option>
             <option value="32" {% if app.request.get('show') == "32" %} selected {% endif %}>32</option>
         </select>
+        </div>
+        </fieldset>
     </form>
 {% endblock %}
     {% block pagination %}
+        <div class="mt-5 text-center">
         {% if page!= 1 %}
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': 1} | merge(app.request.query.all)) }}"><<</a>
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': page-1} | merge(app.request.query.all)) }}"><</a>
+            <a class="btn btn-dark btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': 1} | merge(app.request.query.all)) }}"><<</a>
+            <a class="btn btn-dark btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': page-1} | merge(app.request.query.all)) }}"><</a>
         {% endif %}
         {% for i in range(0, (count/show)|round(0, 'ceil')-1) %}
             {% if page== i + 1 %}
-                <a class="btn btn-success btn-xs">{{ i + 1}}</a>
+                <a class="btn btn-dark btn-xs">{{ i + 1}}</a>
             {% else %}
-                <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page':i + 1} | merge(app.request.query.all)) }}">{{ i + 1}}</a>
+                <a class="btn btn-dark btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page':i + 1} | merge(app.request.query.all)) }}">{{ i + 1}}</a>
             {% endif %}
         {% endfor %}
         {% if page!= (count/3)|round(0, 'ceil') %}
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': page+1} | merge(app.request.query.all)) }}">></a>
-            <a class="btn btn-default btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': (count/3)|round(0, 'ceil')} | merge(app.request.query.all)) }}">>></a>
+            <a class="btn btn-dark btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': page+1} | merge(app.request.query.all)) }}">></a>
+            <a class="btn btn-dark btn-xs" href="{{ path('page',{'city': city, 'category': category, 'page': (count/3)|round(0, 'ceil')} | merge(app.request.query.all)) }}">>></a>
         {% endif %}
+        </div>
     {% endblock %}

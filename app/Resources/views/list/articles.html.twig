@@ -2,36 +2,38 @@
 {% block main %}
     {% block filters %}
     {% endblock %}
+    <div id="main" class="col-sm-12">
     <div class="container body-content">
-        <div class="row">
+        <div class="row mt-5">
             {% for article in articles %}
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <article>
                         <header>
-                            <h2>{{ article.title }}</h2>
+                            <h4>{{ article.title }}</h4>
                         </header>
 
+                        <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="250" width="250">
                         <p>
-                            {{ article.summary }}
-                        </p>
-
-                        <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="270" width="400">
-
+                                {{ article.summary }}
+                            </p>
+                        <h4>
+                            ${{ article.price }}
+                        </h4>
                         <small class="author">
                             {{ article.author.fullName }}
                         </small>
+                        <br>
 
-                        <footer>
-                            <div class="pull-right">
-                                <a class="btn btn-default btn-xs"
-                                   href="{{ path('article_view',{'id':article.id}) }}">Read more &raquo;</a>
-                            </div>
-                        </footer>
+
+                        <a class="btn btn-info mb-5"
+                           href="{{ path('article_view',{'id':article.id}) }}">Read more &raquo;</a>
+
                     </article>
                 </div>
             {% endfor %}
 
         </div>
+    </div>
     </div>
 
 

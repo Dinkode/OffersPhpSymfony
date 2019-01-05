@@ -1,64 +1,77 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <div class="container body-content">
-        <div class="row">
-            <div class="col-md-12">
+
+        <div class="container body-container mt-5">
                 <article>
-                    <header>
-                        <h2>{{ article.title }}</h2>
-                    </header>
+                    <div class="row">
+                        <div class="col-6">
 
-                    <p>
-                        {{ article.content }}
-                    </p>
-
-                    <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" >
-
+                           <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="500px" width="500px">
+                        </div>
+                        <div class="col-5">
+                        <header>
+                            <h2>{{ article.title }}</h2>
+                        </header>
+                            <h2>${{ article.price }}</h2>
                     <small class="author">
                         {{ article.author.fullName }}
                     </small>
+                            <p>
+                                {{ article.content }}
+                            </p>
 
-                    <button id="addComment" class="btn btn-default" onclick="writeComment()">Add Comment</button>
-                    <div id="comment" style="display: none">
-                        <form method="post" action="{{ path('add_comment', {id:
-                            article.id}) }}">
-                            <div class="form-group">
-                                <!--<label class="col-sm-4 control-label" for="article_content">Content</label>-->
-                                <div class="col-sm-6">
-                                    <textarea class="form-control" rows="6" id="comment_content" name="comment"></textarea>
-                                    <input class="btn btn-success btn-sm" type="submit" value="Create" />
-                                </div>
+                            <div class="align-text-bottom">
+                            <a class="btn btn-default btn-xs align-bottom" href="{{ path('offers_index') }}">back &raquo;</a>
+                            {% if app.getUser() and (app.getUser().isAuthor(article) or app.getUser().isAdmin()) %}
+                                <a class="btn btn-success btn-xs align-bottom" href="{{ path('article_edit', {id: article.id}) }}">edit &raquo;</a>
+                                <a class="btn btn-danger btn-xs align-bottom" href="{{ path('article_delete', {id: article.id}) }}">delete &raquo;</a>
+                            {% endif %}
                             </div>
-                        </form>
+
+                        </div>
+
+
+
                     </div>
+
+
+                    <div class="row mt-3">
                     {% for img in article.images %}
                         <div class="form-group">
-                            <label class="col-sm-4 control-label" for="article_title">Post Image</label>
-                            <div class="col-sm-4 ">
+                            <div class="col-3 ">
                                 <img src="{{ asset('uploads/images/') ~ img.name }}" name="{{ img.name }}" height="270" width="270">
                             </div>
                         </div>
                     {% endfor %}
+                    </div>
+                        <div id="comment" style="display: none">
+                            <form method="post" action="{{ path('add_comment', {id:
+                                article.id}) }}">
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control" rows="6" id="comment_content" name="comment"></textarea>
+                                        <input class="btn btn-success" type="submit" value="Create" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <button id="addComment" class="btn btn-success" onclick="writeComment()">Add Comment</button>
 
+
+                    <h2 class="text-center mt-5 mb-5">COMMENTS</h2>
+                    <hr>
                     {% for comment in article.comments %}
                         <div>
-                        <p>{{ comment.content }}</p>
+                            <h5>{{ comment.user.fullName }}</h5>
+                        <p >{{ comment.content }}</p>
                         {% if app.getUser() and (app.getUser().isCommentAuthor(comment) or app.getUser().isAdmin()) %}
-                            <button class="del" onclick="deleteComment(this, {{ comment.id }})">Delete</button>
+                            <button class="btn btn-danger mb-5" onclick="deleteComment(this, {{ comment.id }})">Delete</button>
                         {% endif %}
                         </div>
                     {% endfor %}
 
-                    <footer>
-                        <div class="pull-right">
-                            <a class="btn btn-default btn-xs" href="{{ path('offers_index') }}">back &raquo;</a>
-                            {% if app.getUser() and (app.getUser().isAuthor(article) or app.getUser().isAdmin()) %}
-                            <a class="btn btn-success btn-xs" href="{{ path('article_edit', {id: article.id}) }}">edit &raquo;</a>
-                            <a class="btn btn-danger btn-xs" href="{{ path('article_delete', {id: article.id}) }}">delete &raquo;</a>
-                            {% endif %}
-                        </div>
-                    </footer>
+
                 </article>
             </div>
         </div>
@@ -67,13 +80,7 @@
         function writeComment() {
 
             $('#comment').toggle();
-            $.ajax({
-                url: "https://test-e3f8c.firebaseio.com/.json",
-                type:"GET",
-                success: function (data) {
-                    console.log(data['lambo']);
-                }
-            });
+     
         }
 
         function deleteComment(elm, id) {

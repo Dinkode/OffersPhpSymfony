@@ -3,21 +3,27 @@
 {% block body_id 'profile' %}
 
 {% block main %}
+<div id="main" class="col-sm-12">
+    <div class="container body-content">
+        <h2 class="mt-5 mb-5">Admin Panel</h2>
+        <h5>Set Roles</h5>
+        <hr>
     <form method="post" action="{{ path('set_roles') }}">
     {% for user in users %}
-        <ul>
-            <li>{{ user.fullName }}</li>
+        <p>Email: {{ user.email }}</p>
 
             {% for role in roles %}
                <ul>
                    <li>
-                       {{ role.name }} <input type="checkbox" name="{{ user.id}}_{{ role.id }}" value="{{ role.id }}" onchange="setRole(this)" {% if  role.name  in user.roles %} checked {% endif %}>
+                       {{ role.name }} <input class="ml-1" type="checkbox" name="{{ user.id}}_{{ role.id }}" value="{{ role.id }}" onchange="setRole(this)" {% if  role.name  in user.roles %} checked {% endif %}>
                    </li>
                </ul>
             {% endfor %}
-        </ul>
+
     {% endfor %}
     </form>
+    </div>
+</div>
     <script type='text/javascript'>
 
         function setRole(elm) {

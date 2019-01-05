@@ -6,15 +6,30 @@
 <form class="form-horizontal" action="{{ path('article_edit', {id:
 article.id}) }}" enctype="multipart/form-data" method="POST">
 <fieldset>
-<legend>Edit Post</legend>
+<h3 class="mt-5">Edit {{ article.title }}</h3>
 <div class="form-group">
 <label class="col-sm-4 control-label"
-for="article_title">Post Title</label>
+for="article_title">Offer Title</label>
 <div class="col-sm-4 ">
 <input type="text" class="form-control"
 id="article_title" placeholder="Post Title"
 name="article[title]" value="{{ article.title }}">
 </div>
+
+        <div class="form-group col-5 mt-3">
+            <label class="control-label">Price</label>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input type="number" class="form-control" name="article[price]" id="article_price" value="0"/>
+                    <div class="input-group-append">
+                        <span class="input-group-text">.00</span>
+                    </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="form-group">
 <label class="col-sm-4 control-label"
@@ -25,58 +40,52 @@ id="article_content"
 name="article[content]">{{ article.content
 }}</textarea>
 </div>
-</div>
-    {% for img in article.images %}
-    <div class="form-group">
-        <label class="col-sm-4 control-label" for="article_title">Post Image</label>
-        <div class="col-sm-4 ">
-            <img src="{{ asset('uploads/images/') ~ img.name }}" name="{{ img.name }}" height="270" width="270">
-            <button class="del" onclick="deleteThis(this)">Delete</button>
-
-        </div>
-    </div>
-    {% endfor %}
-
-    <div class="form-group">
-        <label class="col-sm-4 control-label" for="article_title">Category</label>
-        <div class="col-sm-4 ">
-            {{ form(form.category) }}
-        </div>
+    <label class="col-sm-4 control-label mt-3" for="category">Category</label>
+    <div class="col-sm-4 " id="category">
+        {{ form(form.category) }}
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-4 control-label" >Price</label>
-        <div class="col-sm-4 ">
-            <input type="number" name="article[price]" id="article_price" value="0"/>
-        </div>
-    </div>
-
-    <div class="form-group">
+    <div class="row mt-3">
+    <div class="form-group col-5">
         <label class="col-sm-4 control-label" for="article_title">Free Shipping</label>
         <div class="col-sm-4 ">
             <input type="checkbox" name="article[freeShipping]" value="1" {% if article.freeShipping %} checked {% endif %}>
         </div>
     </div>
 
-    <div class="form-group" on>
+    <div class="form-group col-5" >
         <label class="col-sm-4 control-label" for="article_title">Is New</label>
         <div class="col-sm-4 ">
             <input type="checkbox" name="article[isNew]" value="1" {% if article.new %} checked {% endif %}>
         </div>
     </div>
+    </div>
 
     <div class="form-group">
         <label class="col-sm-4 control-label" for="article_title">City</label>
-        <div class="col-sm-4 ">
+        <div class="col-4 ">
             {{ form(form.city) }}
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="row">
+    {% for img in article.images %}
+
+        <div class="col-sm-3 ">
+            <img src="{{ asset('uploads/images/') ~ img.name }}" name="{{ img.name }}" height="270" width="270">
+            <button class="btn btn-danger mt-3" onclick="deleteThis(this)">Delete</button>
+
+
+    </div>
+    {% endfor %}
+    </div>
+
+
+    <div class="form-group mt-3">
         <label class="col-sm-4 control-label" for="article_title">Post Image</label>
         <div class="col-sm-4 ">
-            <button type="button" class="btn btn-default btn-sm" id="add" onclick="addFields()">
-                <span class="plus">+</span>
+            <button type="button" class="btn btn-success" id="add" onclick="addFields()">
+                ADD
             </button>
         </div>
     </div>
@@ -86,11 +95,11 @@ name="article[content]">{{ article.content
 <div class="col-sm-4 col-sm-offset-4">
 <a class="btn btn-default" href="{{ path('article_view',
 {id: article.id}) }}">Cancel</a>
-<button type="submit" class="btn btn-
-success">Edit</button>
+<button type="submit" class="btn btn-primary">Edit</button>
 </div>
 </div>
     <input type="hidden" id="city" name="city">
+</div>
 </fieldset>
 </form>
 </div>
@@ -130,7 +139,7 @@ success">Edit</button>
             $(elm).parent().parent().remove();
         }
         function addFields(){
-            var tag = '<div><input type="file" onchange="setValue(this)" name="image'+count+'"><button class="del" onclick="deleteFile(this)">Delete</button><input type="radio" name="featured" value="featured">Set as featured<br></div>';
+            var tag = '<div class="mb-3"><input type="file" onchange="setValue(this)" name="image'+count+'"><button class="btn-danger mr-3 " onclick="deleteFile(this)">Delete</button><input type="radio" name="featured" value="featured">Set as featured<br></div>';
             $('#files').append(tag);
             count +=1;
         }

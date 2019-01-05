@@ -1,69 +1,78 @@
 {% extends 'base.html.twig' %}
 {% block main %}
-    {% block filters %}
-    {% endblock %}
+
+    <img  class="img-fluid" src="{{ asset('banners/img1.jpg')}}">
+    <div class="row">
+        <div class="container body-container">
+    <div id="main" class="col-sm-12">
+    <h2 class="text-center mt-5 mb-5">POPULAR OFFERS</h2>
+    <hr>
     <div class="container body-content">
-        <div class="row">
+        <div class="row mt-5">
             {% for article in featuredArticles %}
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <article>
                         <header>
-                            <h2>{{ article.title }}</h2>
+                            <h4>{{ article.title }}</h4>
                         </header>
 
-                        <p>
-                            {{ article.summary }}
-                        </p>
-
-                        <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="270" width="400">
-
+                        <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="250" width="250">
+                        <span>
+                                {{ article.summary }}
+                            </span>
+                        <h4>
+                            ${{ article.price }}
+                        </h4>
                         <small class="author">
                             {{ article.author.fullName }}
                         </small>
+                        <br>
 
-                        <footer>
-                            <div class="pull-right">
-                                <a class="btn btn-default btn-xs"
-                                   href="{{ path('article_view',{'id':article.id}) }}">Read more &raquo;</a>
-                            </div>
-                        </footer>
+
+                        <a class="btn btn-info"
+                           href="{{ path('article_view',{'id':article.id}) }}">Read more &raquo;</a>
+
                     </article>
                 </div>
             {% endfor %}
 
         </div>
     </div>
+    <h2 class="text-center mt-5 mb-5">NEW OFFERS</h2>
+    <hr>
+        <div class="container body-content">
+            <div class="row mt-5">
+                {% for article in newArticles %}
+                    <div class="col-md-3">
+                        <article>
+                            <header>
+                                <h4>{{ article.title }}</h4>
+                            </header>
 
-    <div class="container body-content">
-        <div class="row">
-            {% for article in newArticles %}
-                <div class="col-md-6">
-                    <article>
-                        <header>
-                            <h2>{{ article.title }}</h2>
-                        </header>
+                            <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="250" width="250">
+                            <span>
+                                {{ article.summary }}
+                            </span>
+                            <h4>
+                                ${{ article.price }}
+                            </h4>
+                            <small class="author">
+                                {{ article.author.fullName }}
+                            </small>
+                            <br>
 
-                        <p>
-                            {{ article.summary }}
-                        </p>
 
-                        <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="270" width="400">
+                            <a class="btn btn-info"
+                               href="{{ path('article_view',{'id':article.id}) }}">Read more &raquo;</a>
 
-                        <small class="author">
-                            {{ article.author.fullName }}
-                        </small>
+                        </article>
+                    </div>
+                {% endfor %}
 
-                        <footer>
-                            <div class="pull-right">
-                                <a class="btn btn-default btn-xs"
-                                   href="{{ path('article_view',{'id':article.id}) }}">Read more &raquo;</a>
-                            </div>
-                        </footer>
-                    </article>
-                </div>
-            {% endfor %}
-
+            </div>
         </div>
+    </div>
+    </div>
     </div>
     {% block pagination %}
 

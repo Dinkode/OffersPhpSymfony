@@ -255,7 +255,6 @@ class Article
     }
 
 
-
     /**
      * @return string
      */

@@ -4,17 +4,22 @@
     {% endblock %}
     <div class="container body-content">
         <div class="row">
+            <div class="col-5 mt-5 mb-5">
+            <ul class="list-group">
             {% for city in cities %}
-              <ul>
-                  <li>
-                     <a href="{{ path('page', {'city': city.name|lower, 'category': category, 'page':1})}}"> {{ city.name }} ({{ city.articles|length }}) </a>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                     <a href="{{ path('page', {'city': city.name|lower, 'category': category, 'page':1})}}"> {{ city.name }} </a>
+                      <span class="badge badge-primary badge-pill">({{ city.articles|length }})</span>
                   </li>
-              </ul>
+
             {% endfor %}
-            {% if cities|length>0 %}
-                <h3><a href="{{ path('page', {'city': 'all', 'category': category, 'page':1})}}">ALL OFFERS</a></h3>
-            {% endif %}
+            </ul>
+            </div>
         </div>
+        {% if cities|length>0 %}
+            <h3><a href="{{ path('page', {'city': 'all', 'category': category, 'page':1})}}">ALL OFFERS</a></h3>
+        {% endif %}
     </div>
     {% block pagination %}
 
