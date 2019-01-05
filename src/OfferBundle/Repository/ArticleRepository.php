@@ -61,10 +61,31 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
         return $query->execute();
     }
 
+    public function featuredArticles($limit){
+        $query = $this
+            ->createQueryBuilder('a')
+            ->select('a')
+            ->orderBy('a.views', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->execute();
+    }
+
+    public function newArticles($limit){
+        $query = $this
+            ->createQueryBuilder('a')
+            ->select('a')
+            ->orderBy('a.dateAdded', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->execute();
+    }
+
     public function searchArticles($offset, $limit, $shipping, $new, $image, $order, $type, $key){
         $query = $this
             ->createQueryBuilder('a');
-        return $query->where($query->expr()->like('a.title',  $query->expr()->literal('%' . $key . '%')))
+        return $query->select('a')->
+        where($query->expr()->like('a.title',  $query->expr()->literal('%' . $key . '%')))
             ->andWhere('a.freeShipping = 1 or a.freeShipping = :shipping')
             ->andWhere('a.isNew = 1 or a.isNew = :new')
             ->andWhere('a.featuredImage IS NOT NULL or a.featuredImage IS '.$image)

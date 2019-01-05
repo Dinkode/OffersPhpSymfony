@@ -14,8 +14,9 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
-        return $this->render('list/index.html.twig', ['articles'=>$articles]);
+        $featuredArticles = $this->getDoctrine()->getRepository(Article::class)->featuredArticles(4);
+        $newArticles = $this->getDoctrine()->getRepository(Article::class)->newArticles(4);
+        return $this->render('list/index.html.twig', ['featuredArticles'=>$featuredArticles, 'newArticles'=>$newArticles]);
     }
 
     /**
@@ -118,8 +119,7 @@ class DefaultController extends Controller
 
         $count = count($this->getDoctrine()->getRepository(Article::class)
             ->searchArticles(0, PHP_INT_MAX, $shipping, $new, $image, $orderBy, $orderType, $search));
-        var_dump($articles);
-        exit();
+
         return $this->render('list/search.twig', ['articles'=>$articles, 'count'=>$count, 'page'=>$page, 'show'=>$limit]);
 
     }

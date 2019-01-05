@@ -3,7 +3,7 @@
 {% block body_id 'profile' %}
 
 {% block main %}
-    <form>
+    <form method="post" action="{{ path('set_roles') }}">
     {% for user in users %}
         <ul>
             <li>{{ user.fullName }}</li>
@@ -11,30 +11,28 @@
             {% for role in roles %}
                <ul>
                    <li>
-                       {{ role.name }} <input type="checkbox" name="{{ user.id }}" {% if  role.name  in user.roles %} checked {% endif %}>
+                       {{ role.name }} <input type="checkbox" name="{{ user.id}}_{{ role.id }}" value="{{ role.id }}" onchange="setRole(this)" {% if  role.name  in user.roles %} checked {% endif %}>
                    </li>
                </ul>
             {% endfor %}
-
-
-
         </ul>
-    </form>
     {% endfor %}
-    <script>
-        function setAsAdmin(elm) {
-            var name = $(elm).attr('name');
-            var url = '{{ path("set_admin", {'id': 'id'}) }}';
-            url = url.replace("id", name);
-            console.log(url);
+    </form>
+    <script type='text/javascript'>
+
+        function setRole(elm) {
+            var ur = {'ur': $(elm).attr('name')};
+
             $.ajax({
-                url: url,
-                type: "POST",
+                url: {{ path('set_roles') }},
+                type:"POST",
+                data: ur,
                 success: function (data) {
                     console.log(data);
-                    console.log('role admin set');
+                    console.log('setrole');
                 }
-            })
+            });
+
         }
     </script>
 {% endblock %}

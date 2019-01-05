@@ -280,6 +280,12 @@ class User implements UserInterface
         return $this;
     }
 
+    public function eraseRole($role){
+        $key = array_search($role, $this->getRoles());
+        unset($this->roles[$key]);
+        return $this;
+    }
+
 
     /**
      * Returns the salt that was originally used to encode the password.

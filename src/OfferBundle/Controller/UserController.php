@@ -54,11 +54,24 @@ class UserController extends Controller
 
     /**
      * @Route("/profile", name="user_profile")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function profile(){
+    public function profile(Request $request){
         $userId = $this->getUser()->getId();
         $user = $this->getDoctrine()->getRepository(User::class)->find($userId);
-        return $this->render('user/profile.html.twig', ['user'=>$user]);
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user->setFullName($request->request->get('fullName'));
+            var_dump($request->request->get('phone'));
+            $user->setPhone($request->request->get('phone'));
+            $em = $this->getDoctrine()->getManager();
+            $em->merge($user);
+            $em->flush();
+            return $this->redirectToRoute('user_profile');
+        }
+        return $this->render('user/profile.html.twig', ['user'=>$user, 'form'=>$form->createView()]);
     }
 
     /**
@@ -77,7 +90,7 @@ class UserController extends Controller
      */
     public function admin(Request $request){
         $currentUser=$this->getUser();
-        if(!$currentUser->isAdmin()){
+        if(!$this->getUser() || !$currentUser->isAdmin()){
             return $this->redirectToRoute('offers_index');
         }
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
@@ -86,26 +99,33 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/set_admin/{id}", name="set_admin")
-     * @param $id
+     * @Route("/set_roles/", name="set_roles", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
-    public function setAdmin($id, Request $request)
+    public function setAdmin(Request $request)
     {
             /** @var User $user */
-            $user = $this->getDoctrine()->getRepository(User::class)->findBy($id);
-            $role = $this->getDoctrine()->getRepository(Role::class)->findBy(['name'=>'ROLE_ADMIN']);
-            $user->setRoles($role);
+            $currentUser=$this->getUser();
+            if ($currentUser->isAdmin()) {
+                $ur = $request->request->get('ur');
 
+                $param = explode('_', $ur);
+                $user = $this->getDoctrine()->getRepository(User::class)->find($param[0]);
+                $role = $this->getDoctrine()->getRepository(Role::class)->find($param[1]);
+                if (in_array($role->getName(), $user->getRoles())) {
 
-            $json = ['name' => ''];
+                    $user->eraseRole($role->getName());
+                } else {
+                    $user->setRoles($role);
+                }
+                $em = $this->getDoctrine()->getManager();
+                $em->merge($user);
+                $em->flush();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->merge($user);
-            $em->flush();
-
-            return new JsonResponse($json);
+                return new JsonResponse($user->getRoles());
+            }
+        return new JsonResponse(['failed'=>'not admin']);
 
     }
 

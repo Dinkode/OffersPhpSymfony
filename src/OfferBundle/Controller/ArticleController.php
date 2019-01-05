@@ -78,6 +78,10 @@ class ArticleController extends Controller
      */
     public function viewArticle($id){
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        $article->setViews($article->getViews()+1);
+        $em = $this->getDoctrine()->getManager();
+        $em->merge($article);
+        $em->flush();
         return $this->render('article/details.html.twig', ['article'=>$article]);
 
     }
@@ -135,7 +139,6 @@ class ArticleController extends Controller
             if(count($article->getImages())>0 && $article->getFeaturedImage() == null){
                 $article->setFeaturedImage($article->getImages()[0]->getName());
             }
-            $article->setViews(0);
             $cityName = $request->request->get('city');
             $city =  $this->getDoctrine()->getRepository(City::class)->findOneBy(['name'=>$cityName]);
             $article->setCity($city);
