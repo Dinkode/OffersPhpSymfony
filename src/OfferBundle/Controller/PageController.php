@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends Controller
+class PageController extends Controller
 {
     /**
      * @Route("/", name="offers_index")
@@ -16,6 +16,7 @@ class DefaultController extends Controller
     {
         $featuredArticles = $this->getDoctrine()->getRepository(Article::class)->featuredArticles(4);
         $newArticles = $this->getDoctrine()->getRepository(Article::class)->newArticles(4);
+
         return $this->render('list/index.html.twig', ['featuredArticles'=>$featuredArticles, 'newArticles'=>$newArticles]);
     }
 
@@ -123,5 +124,4 @@ class DefaultController extends Controller
         return $this->render('list/search.twig', ['articles'=>$articles, 'count'=>$count, 'page'=>$page, 'show'=>$limit]);
 
     }
-
 }
