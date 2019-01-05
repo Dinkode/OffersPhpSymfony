@@ -23,7 +23,7 @@ name="article[title]" value="{{ article.title }}">
                     <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                     </div>
-                    <input type="number" class="form-control" name="article[price]" id="article_price" value="0"/>
+                    <input type="number" class="form-control" name="article[price]" id="article_price" value="{{ article.price }}"/>
                     <div class="input-group-append">
                         <span class="input-group-text">.00</span>
                     </div>
@@ -136,7 +136,7 @@ name="article[content]">{{ article.content
             });
 
             console.log(autorId);
-            $(elm).parent().parent().remove();
+            $(elm).parent().remove();
         }
         function addFields(){
             var tag = '<div class="mb-3"><input type="file" onchange="setValue(this)" name="image'+count+'"><button class="btn-danger mr-3 " onclick="deleteFile(this)">Delete</button><input type="radio" name="featured" value="featured">Set as featured<br></div>';

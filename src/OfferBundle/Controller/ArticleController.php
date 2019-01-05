@@ -147,7 +147,7 @@ class ArticleController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->merge($article);
             $em->flush();
-            return $this->redirectToRoute("offers_index");
+            return $this->redirectToRoute("user_offers");
         }
         return $this->render("article/edit.html.twig", ['form'=>$form->createView(), 'article'=>$article]);
 
