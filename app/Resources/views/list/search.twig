@@ -26,6 +26,7 @@
                     <option value="18" {% if app.request.get('show') == "18" %} selected {% endif %}>18</option>
                     <option value="32" {% if app.request.get('show') == "32" %} selected {% endif %}>32</option>
                 </select>
+                <input type="hidden" name="key" value="{{app.request.query.get('key') }}">;
             </div>
         </fieldset>
     </form>
