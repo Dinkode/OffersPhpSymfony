@@ -45,18 +45,26 @@
                         </div>
                     {% endfor %}
                     </div>
-                        <div id="comment" style="display: none">
-                            <form method="post" action="{{ path('add_comment', {id:
-                                article.id}) }}">
-                                <div class="form-group">
-                                    <div class="col-sm-6">
-                                        <textarea class="form-control" rows="6" id="comment_content" name="comment"></textarea>
-                                        <input class="btn btn-success" type="submit" value="Create" />
-                                    </div>
+
+                    <div class="jumbotron">
+                        <h1 class="display-3">Phone:  {{ article.author.phone }}</h1>
+                        <p class="lead">{% if article.freeShipping %}The offer includes free shipment{% else %}The offer does not includes free shipment{% endif %}</p>
+                        <p class="lead">{% if article.new %}New item!{% else %}Used item!{% endif %}</p>
+                        <hr class="my-4">
+                        <p>Name: {{ article.author.fullName }},       Email: {{ article.author.email }}</p>
+                    </div>
+                    <div id="comment" style="display: none">
+                        <form method="post" action="{{ path('add_comment', {id:
+                            article.id}) }}">
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <textarea class="form-control" rows="6" id="comment_content" name="comment"></textarea>
+                                    <input class="btn btn-success" type="submit" value="Create" />
                                 </div>
-                            </form>
-                        </div>
-                        <button id="addComment" class="btn btn-success" onclick="writeComment()">Add Comment</button>
+                            </div>
+                        </form>
+                    </div>
+                    <button id="addComment" class="btn btn-success" onclick="writeComment()">Add Comment</button>
 
 
                     <h2 class="text-center mt-5 mb-5">COMMENTS</h2>
