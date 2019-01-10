@@ -32,7 +32,7 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=255)
+     * @ORM\Column(name="content", type="text")
      */
     private $content;
 
@@ -304,16 +304,12 @@ class Article
     public function getSummary(): string
     {
         if (strlen($this->getContent())>50){
-            return $this->getSummary();
+            return substr($this->getContent(), 0, 50)."...";
         }
         return $this->getContent();
     }
 
 
-    public function setSummary(): void
-    {
-        $this->summary = substr($this->getContent(), 0, strlen($this->getContent()/2))."...";
-    }
 
 
     /**

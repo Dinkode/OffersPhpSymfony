@@ -17,9 +17,9 @@
                         </header>
 
                         <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="250" width="250">
-                        <span>
+                        <p class="overflow-hidden">
                                 {{ article.summary }}
-                            </span>
+                            </p>
                         <h4>
                             ${{ article.price }}
                         </h4>
@@ -50,9 +50,11 @@
                             </header>
 
                             <img src="{{ asset('uploads/images/') ~ article.featuredImage }}" height="250" width="250">
-                            <span>
+                            <blockquote class="blockquote">
+                            <p class="overflow-hidden">
                                 {{ article.summary }}
-                            </span>
+                            </p>
+                            </blockquote>
                             <h4>
                                 ${{ article.price }}
                             </h4>
